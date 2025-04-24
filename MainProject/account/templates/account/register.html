@@ -1,0 +1,280 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destiny - Register</title>
+
+    <style>
+        /* General Reset */
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        .card-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .imgbox {
+            width: 100%;
+            height: 200px;
+            background: url("{% static 'images/registerbg.png' %}") no-repeat center center;
+            background-size: cover;
+            position: relative;
+        }
+
+        .title {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 7rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 5px white;
+        }
+
+        .contentbox {
+            padding: 2rem;
+        }
+
+        .form-box h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: darkblue;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Two equal columns */
+            gap: 15px; /* Space between columns */
+            margin-bottom: 20px;
+        }
+
+        .form-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-item label {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .form-box form input {
+            width: 100%;
+            height: 45px;
+            border-radius: 6px;
+            border: 1.5px solid #C7BEBE;
+            padding: 0 15px;
+            font-size: 16px;
+            color: black;
+            outline: none;
+            transition: 0.3s ease;
+        }
+
+        .form-box form input:focus {
+            border-color: darkblue;
+        }
+
+        .form-box form button {
+            width: 50%;
+            display: block;
+            margin: 20px auto;
+            height: 45px;
+            background: darkblue;
+            font-size: 1.5rem;
+            font-family: 'Racing Sans One', sans-serif;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .form-box form button:hover {
+            background: blue;
+        }
+
+        .additional-links {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .additional-links a {
+            color: darkblue;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-family: 'Racing Sans One', sans-serif;
+        }
+
+        .additional-links a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr; /* One column layout on smaller screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card-container"  style="margin-bottom: 5%;">
+        <div class="card" style="margin-top: 7%;">
+            <!-- Image Section -->
+            <div class="imgbox">
+                <div class="title"></div>
+            </div>
+
+            <!-- Form Section -->
+            <div class="contentbox">
+                <div class="container">
+                    <h3 class="mb-4 text-center" style="text-align: center;
+                    font-size: 2.5rem;
+                    margin-bottom: 2rem;
+                    color: darkblue;
+                ">REGISTER</h3>
+
+                    {% if messages %}
+                        <div class="alert alert-info">
+                            {% for message in messages %}
+                                <p>{{ message }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <form method="POST" class="needs-validation" novalidate>
+                        {% csrf_token %}
+
+                        <div class="form-box">
+                            <!-- User Form Fields -->
+                            <div class="form-grid">
+                                <div class="form-item">
+                                    <label for="{{ user_form.username.id_for_label }}">First Name:</label>
+                                    {{ user_form.first_name }}
+                                    {% if user_form.first_name.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ user_form.first_name.errors|join:", " }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-item">
+                                    <label for="{{ user_form.username.id_for_label }}">Last Name:</label>
+                                    {{ user_form.last_name }}
+                                    {% if user_form.last_name.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ user_form.last_name.errors|join:", " }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-item">
+                                    <label for="{{ user_form.username.id_for_label }}">Username:</label>
+                                    {{ user_form.username }}
+                                    {% if user_form.username.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ user_form.username.errors|join:", " }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-item">
+                                    <label for="{{ user_form.email.id_for_label }}">Email:</label>
+                                    {{ user_form.email }}
+                                    {% if user_form.email.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ user_form.email.errors|join:", " }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="form-grid">
+                                <div class="form-item">
+                                    <label for="{{ user_form.password.id_for_label }}">Password:</label>
+                                    {{ user_form.password }}
+                                    {% if user_form.password.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ user_form.password.errors|join:", " }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-item">
+                                    <label for="{{ user_form.confirm_password.id_for_label }}">Confirm Password:</label>
+                                    {{ user_form.confirm_password }}
+                                    {% if user_form.confirm_password.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ user_form.confirm_password.errors|join:", " }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- Customer Form Fields -->
+                            <div class="form-grid">
+                                <div class="form-item">
+                                    <label for="{{ customer_form.gender.id_for_label }}">Gender:</label>
+                                    {{ customer_form.gender }}
+                                    {% if customer_form.gender.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ customer_form.gender.errors|join:", " }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-item">
+                                    <label for="{{ customer_form.phoneNumber.id_for_label }}">Phone Number:</label>
+                                    {{ customer_form.phoneNumber }}
+                                    {% if customer_form.phoneNumber.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ customer_form.phoneNumber.errors|join:", " }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="form-grid">
+                                <div class="form-item">
+                                    <label for="{{ customer_form.dob.id_for_label }}">Date of Birth:</label>
+                                    {{ customer_form.dob }}
+                                    {% if customer_form.dob.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ customer_form.dob.errors|join:", " }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-item">
+                                    <!-- Placeholder for future field -->
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100" style="color: black;font-size: 1rem;">Register</button>
+                        </div>
+                    </form>
+
+                    <div class="additional-links">
+                        <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}

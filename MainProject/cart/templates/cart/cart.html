@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% load total %}
+<section class="ftco-section ftco-cart">
+    <div class="container">
+        {% if cart %}
+        <div class="row">
+            <div class="col-md-12 ftco-animate">
+                <div class="cart-list">
+                    <form method="POST" action="{% url 'update_cart' %}">
+                        {% csrf_token %}
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="thead-primary">
+                                    <tr class="text-center">
+                                        <th>&nbsp;</th>
+                                        <th>&nbsp;</th>
+                                        <th>Product</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in cart %}
+                                    <tr class="text-center">
+                                        <td class="product-remove">
+                                            <a href="{% url 'remove_item_from_cart' item.id %}">
+                                                <span class="ion-ios-close"></span>
+                                            </a>
+                                        </td>
+                                        <td class="image-prod">
+                                            <div class="img" style="background-image:url({{ item.product.image.url }});width: 170px;"></div>
+                                        </td>
+                                        <td class="product-name">
+                                            <h3>{{ item.product.name }}</h3>
+                                        </td>
+                                        <td class="price">&#8377;{{ item.product.price }}</td>
+                                        <td class="quantity">
+                                            <div class="input-group mb-3">
+                                                <input type="number" name="{{ item.id }}" class="quantity form-control input-number" value="{{ item.quantity }}" min="1" max="{{ item.product.stock }}">
+                                            </div>
+                                        </td>
+                                        <td class="total">&#8377;{{ item.quantity|multiply:item.product.price }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="d-flex justify-content-end gap-2" style="margin-bottom: 1.5%;">
+                            <button type="submit" class="btn btn-primary py-2 px-3" style="margin-right: 1%;">Update Cart</button>
+                            <button type="submit" class="btn btn-primary py-2 px-3"><a href="{% url 'clear_cart' %}" style="color: black;">Clear Cart</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-start" >
+            <div class="col col-lg-5 col-md-6 mt-5 cart-wrap ftco-animate" style="box-shadow: 0px 0px 3px 1px black;padding-top: 2%;margin-left: 57%;">
+                <div class="cart-total mb-3" >
+                    <h3>Cart Totals</h3>
+                    <p class="d-flex">
+                        <span>Subtotal</span>
+                        <span>&#8377;{{ cart|total_cart }}</span>
+                    </p>
+                    <hr>
+                    <p class="d-flex total-price">
+                        <span>Total</span>
+                        <span>&#8377;{{ cart|total_cart }}</span>
+                    </p>
+                </div>
+                <p class="text-center">
+                    <button type="submit" class="btn btn-primary py-2 px-3"><a href="{% url 'checkout' %}" style="color: black;">Proceed to Checkout</a></button>
+                </p>
+            </div>
+        </div>
+        {% else %}
+        <h3 class="text-center" style="margin-top: 7%;font-size: 3rem;">Your cart is empty.</h3>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

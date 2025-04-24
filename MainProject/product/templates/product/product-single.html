@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="ftco-section">
+    <div class="container" style="margin-top:2%;">
+        <div class="row">
+            <div class="col-lg-6 mb-5 ftco-animate">
+                <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.name }}">
+            </div>
+            <div class="col-lg-6 product-details pl-md-5 ftco-animate" style="margin-top: 9%;">
+                <h3>{{ product.name }}</h3>
+                <p class="price"><span>&#8377;{{ product.price }}</span></p>
+                <p>{{ product.description }}</p>
+                <p style="color:black;">{{ product.stock }} pieces available</p>
+                <p>
+                    <a href="{% url 'add_to_cart' product.id %}" class="btn btn-black py-3 px-5 mr-2">Add to Cart</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Similar Products Section -->
+<div class="site-section block-3 site-blocks-2">
+    <div class="container" style="margin-top: -10%;">
+        <div class="row justify-content-center">
+            <div class="col-md-7 site-section-heading text-center pt-4">
+                <h2 class="navbar-brand" style="font-size: 2rem;">SIMILAR &nbsp;PRODUCTS</h2>
+            </div>
+        </div>
+
+        <!-- Carousel Container for Similar Products -->
+        <div id="similar-products-carousel" class="carousel slide" data-ride="carousel" style="margin-bottom: 5%;">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="row">
+                        {% for similar_product in similar_products|slice:":3" %}
+                            <div class="col-md-4">
+                                <div class="block-4 text-center">
+                                    <a href="{% url 'product' similar_product.id %}">
+                                        <figure class="block-4-image">
+                                            <img src="{{ similar_product.image.url }}" alt="Image" class="img-fluid">
+                                        </figure>
+                                        <div class="block-4-text p-4">
+                                            <h3><a href="{% url 'product' similar_product.id %}" style="color: black;">{{ similar_product.name }}</a></h3>
+                                            <p class=" font-weight-bold"  style="color: black;">&#8377;{{ similar_product.price }}</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row">
+                        {% for similar_product in similar_products|slice:"3:6" %}
+                            <div class="col-md-4">
+                                <div class="block-4 text-center">
+                                    <a href="{% url 'product' similar_product.id %}">
+                                        <figure class="block-4-image">
+                                            <img src="{{ similar_product.image.url }}" alt="Image" class="img-fluid">
+                                        </figure>
+                                        <div class="block-4-text p-4">
+                                            <h3><a href="{% url 'product' similar_product.id %}" style="color: black;">{{ similar_product.name }}</a></h3>
+                                            <p class=" font-weight-bold" style="color: black;">&#8377;{{ similar_product.price }}</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carousel Controls -->
+            <a class="carousel-control-prev" href="#similar-products-carousel" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#similar-products-carousel" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    #similar-products-carousel {
+        position: relative;
+    }
+    
+    .carousel-control-prev,
+    .carousel-control-next {
+        opacity: 1;
+        position: absolute;
+        top: 41%;
+        transform: translateY(-50%);
+        z-index: 1;
+        color: #fff;
+    }
+    
+    .carousel-control-prev {
+        left: -15%;
+    }
+    
+    .carousel-control-next {
+        right: -15%;
+    }
+    
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        color: #C6262C;
+        background-color: #feedaa;
+        border-radius: 10%;
+        width: 50%;
+        height: 50%;
+    }
+</style>
+
+<script>
+    $(document).ready(function(){
+        var quantity = 0;
+
+        $('.quantity-right-plus').click(function(e){
+            e.preventDefault();
+            var quantity = parseInt($('#quantity').val());
+            $('#quantity').val(quantity + 1);
+        });
+
+        $('.quantity-left-minus').click(function(e){
+            e.preventDefault();
+            var quantity = parseInt($('#quantity').val());
+            if(quantity > 0){
+                $('#quantity').val(quantity - 1);
+            }
+        });
+    });
+</script>
+
+{% endblock %}
